@@ -23,18 +23,21 @@ object App {
 
     var routes: Map[String, Function0[Int]] = Map()
 
-    def apply(request: Request) = {
+    def returnFuture(x:String) = {
       val response = Response(Http11, InternalServerError)
       response.mediaType = "text/plain" 
-      response.content = copiedBuffer("asd", UTF_8)
+      response.content = copiedBuffer(x, UTF_8)
       Future.value(response)
-      //#Responses.json("a", acceptsGzip(request))
-      //val response = new DefaultHttpResponse(HTTP_1_1, OK)
-      //response.setContent(copiedBuffer("hello world", UTF_8))
-      //kkFuture.value(response)
+    }
+
+    def apply(request: Request) = {
+      request.method -> Path(request.path) match {
+        case GET -> Root => returnFuture("root")
+        case GET -> Root / "asd" => returnFuture("asd")
+        case GET -> Root / "asd" / lol => returnFuture(lol)
+      }
     }
   }
-
 
   def main(args : Array[String]) {
     val helloworld = new HelloWorld
