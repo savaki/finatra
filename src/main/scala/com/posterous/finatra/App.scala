@@ -19,6 +19,24 @@ import com.twitter.finagle.builder.{Server, ServerBuilder}
  */
 object App {
 
+  object NoParams  {
+    def unapply(r:Request):Option[Boolean] = {
+      if(r.params.toList.isEmpty)
+        Some(true)
+      else
+        None
+    }
+  }
+
+
+  object Lol extends ParamMatcher("lol")
+
+
+//  abstract class NoParamMatcher {
+//    def unapply(params: ParamMap) = {
+//    }
+//  }
+
   class HelloWorld extends Service[Request, Response]{  
 
     var routes: Map[String, Function0[Int]] = Map()
@@ -31,11 +49,27 @@ object App {
     }
 
     def apply(request: Request) = {
-      request.method -> Path(request.path) match {
-        case GET -> Root => returnFuture("root")
-        case GET -> Root / "asd" => returnFuture("asd")
-        case GET -> Root / "asd" / lol => returnFuture(lol)
-      }
+      //j(request.method, Path(request.path) :? NoParams(request)) match {
+      //  case (GET, Root / "thing" :? None) => returnFuture("noparams")
+      //  case (GET, Root / "thing" :? Lol(lol)) => returnFuture(lol)
+      //}
+      //println(request.params)
+     
+      
+      
+      
+      //request match {
+      //  case NoParams(_) => returnFuture("no")
+      //  case _ => returnFuture("yes")
+      //}
+
+      
+      //request.method -> (Path(request.path) :? request.params) match {
+      //  case GET -> Root => returnFuture("root")
+      //  case GET -> Root / "asd" => returnFuture("asd")
+      //  case GET -> Root / "asd" / lol => returnFuture(lol)
+      //  case GET -> Root / "params" :? Lol(lol) => returnFuture("hey")
+      //}
     }
   }
 
