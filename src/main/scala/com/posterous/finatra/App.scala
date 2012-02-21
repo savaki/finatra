@@ -19,6 +19,7 @@ import com.codahale.logula.Logging
 import org.apache.log4j.Level
 import com.yammer.metrics.Metrics
 import com.yammer.metrics.core.Meter
+import com.yammer.metrics.reporting.ConsoleReporter
 import java.util.concurrent.TimeUnit
 
 
@@ -28,7 +29,10 @@ object App extends Logging {
 
  
   class FinatraService extends Service[Request, Response] {  
+
     val requests:Meter = Metrics.newMeter(this.getClass, "requests", "requests", TimeUnit.SECONDS);
+    //ConsoleReporter.enable(1, TimeUnit.SECONDS)
+    
     def apply(request: Request) = {
       requests.mark
       Router.dispatchAndReturn(request)
