@@ -8,7 +8,9 @@ import com.twitter.finagle.http.Status._
 
 
 object FakeApp extends FinatraApp {
-  get("/") { "resp" }
+  get("/") { 
+    "resp" 
+  }
 
   get("/other") { "otherresp" }
   head("/other") { "specialresp" }
@@ -132,7 +134,26 @@ class RouterSpec extends Spec {
 
     @Test def `redirect with Location: /gohere'` = {
       response.headers.get("Location").getOrElse(null).toString.must(be("/gohere"))
-      //response.content.toString("UTF8").must(be("{\"foo\":\"bar\"}"))
+    }
+
+  }
+
+  class `GET '/' with Accepts Header` {
+
+    var request = Request(HttpMethod.GET, "/")
+    request.addHeader("Accept", "application/json")
+    var response = Router.dispatch(request)
+
+    @Test def `returns 200` = {
+      response.statusCode.must(be(200))
+    }
+    
+    @Test def `returns a response` = {
+      response.must(beA[Response])
+    }
+
+    @Test def `sets the Content-Type to application/json` = {
+      response.headers.get("Content-Type").getOrElse(null).toString.must(be("application/json"))
     }
 
   }
