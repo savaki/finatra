@@ -20,9 +20,9 @@ object FakeApp extends FinatraApp {
  
 class RouterSpec extends Spec {
 
-  class `GET '/'` {
+  FakeApp
 
-    FakeApp
+  class `GET '/'` {
 
     var request = Request(HttpMethod.GET, "/")
     var response = Router.dispatch(request)
@@ -43,8 +43,6 @@ class RouterSpec extends Spec {
 
   class `HEAD '/' (curl -I)` {
 
-    FakeApp
-
     var request = Request(HttpMethod.HEAD, "/")
     var response = Router.dispatch(request)
 
@@ -63,8 +61,6 @@ class RouterSpec extends Spec {
   }
 
   class `HEAD '/other' (curl -I)` {
-
-    FakeApp
 
     var request = Request(HttpMethod.HEAD, "/other")
     var response = Router.dispatch(request)
@@ -85,8 +81,6 @@ class RouterSpec extends Spec {
 
   class `GET '/other'` {
 
-    FakeApp
-
     var request = Request(HttpMethod.GET, "/other")
     var response = Router.dispatch(request)
 
@@ -106,8 +100,6 @@ class RouterSpec extends Spec {
   
   class `GET '/jsonstuff'` {
 
-    FakeApp
-
     var request = Request(HttpMethod.GET, "/jsonstuff")
     var response = Router.dispatch(request)
 
@@ -126,8 +118,6 @@ class RouterSpec extends Spec {
   }
   
   class `GET '/redirect'` {
-
-    FakeApp
 
     var request = Request(HttpMethod.GET, "/redirectme")
     var response = Router.dispatch(request)
