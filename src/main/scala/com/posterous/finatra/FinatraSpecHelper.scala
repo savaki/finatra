@@ -13,19 +13,19 @@ abstract class FinatraSpecHelper extends AbstractFinatraSpec[Request, Future[Htt
   def request(
     path: String,
     method: String = "GET",
-    body: Array[Byte] = Array(),
+    //body: Array[Byte] = Array(),
     params: Map[String, String] = Map(),
-    multiParams: Map[String, MultipartItem] = Map(),
-    headers: Map[String, String] = Map(),
-    cookies: Map[String, FinatraCookie] = Map()
+    //multiParams: Map[String, MultipartItem] = Map(),
+    headers: Map[String, String] = Map()
+    //cookies: Map[String, FinatraCookie] = Map()
   ) = {
     new Request(
       method = method,
       path = path,
       params = params,
-      multiParams = multiParams,
-      headers = headers,
-      cookies = cookies
+      //multiParams = multiParams,
+      headers = headers
+      //cookies = cookies
     )
   }
 
