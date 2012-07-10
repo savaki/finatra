@@ -10,6 +10,7 @@ import com.twitter.util.Future
 import java.net.InetSocketAddress
 import com.twitter.finagle.builder.{Server, ServerBuilder}
 import com.twitter.finagle.http.Http
+import scala.collection.mutable.Map
 
 
 import scala.collection.mutable.ListBuffer
@@ -19,9 +20,16 @@ import scala.collection.mutable.ListBuffer
 import com.capotej.finatra_core._
 import scala.collection.JavaConversions._
 
+object foo {
+  import FinatraServer.FinatraController
+
+}
+
 object FinatraServer {
 
-  val controllers = new ControllerCollection
+  type FinatraController = AbstractFinatraController[FinatraRequest, Future[HttpResponse]]
+
+  val controllers = new ControllerCollection[FinatraRequest, Future[HttpResponse]]
   val templateEngine = new TemplateHandler
   var layoutHelperFactory = new LayoutHelperFactory
   var docroot = "public"
@@ -73,7 +81,7 @@ object FinatraServer {
     }
 
     def apply(rawRequest: HttpRequest) = {
-      val request = new FinatraRequest(path=pathOf(rawRequest.getUri()),
+      val request = new Request(path=pathOf(rawRequest.getUri()),
                                        method=rawRequest.getMethod.toString,
                                        params=paramsOf(rawRequest),
                                        headers=headersOf(rawRequest),
