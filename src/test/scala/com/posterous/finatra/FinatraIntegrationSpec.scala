@@ -17,7 +17,7 @@ class MyApp extends FinatraApp {
 @RunWith(classOf[JUnitRunner])
 class FinatraIntegrationSpec extends FinatraSpecHelper {
 
-  def app[Request,FinatraResponse] = { new MyApp }
+  def app = { new MyApp }
 
   "GET /path" should "respond 200" in {
     get("/path")
