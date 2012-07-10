@@ -8,7 +8,6 @@ import com.twitter.util.Future
 
 import com.codahale.jerkson.Json._
 import com.capotej.finatra_core._
-import com.posterous.finatra.FinatraServer.FinatraController
 
 object FinatraResponse {
   def apply(body: String) = new FinatraResponse().body(body).status(200).build
