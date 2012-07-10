@@ -3,6 +3,7 @@ package com.posterous.finatra.test
 import com.posterous.finatra.FinatraApp
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
+import org.jboss.netty.util.CharsetUtil.UTF_8
 
 class MyApp extends FinatraApp {
   get("/path") { request => response("get:path") }
@@ -21,7 +22,8 @@ class FinatraIntegrationSpec extends FinatraSpecHelper {
 
   "GET /path" should "respond 200" in {
     get("/path")
-    println(lastResponse) // should equal (Some("get:path"))
+    val thing = lastResponse.get.getContent.toString(UTF_8)
+    thing should equal ("get:path")
   }
 
   // "POST /path" should "respond 200" in {
