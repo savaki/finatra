@@ -1,7 +1,11 @@
 package com.posterous.finatra
-import com.posterous.finatra.FinatraServer.FinatraController
 
-class FinatraApp extends FinatraController {
+import com.capotej.finatra_core.AbstractFinatraController
+import com.twitter.util.Future
+import org.jboss.netty.handler.codec.http._
+
+
+class FinatraApp extends AbstractFinatraController[Request, Future[HttpResponse]] {
 
   def response(body: String, status: Int = 200, headers: Map[String, String] = Map()) = {
     FinatraResponse(status, body, headers)

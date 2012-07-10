@@ -5,9 +5,10 @@ import com.capotej.finatra_core.{AbstractFinatraSpec}
 import org.jboss.netty.handler.codec.http.DefaultHttpResponse
 import com.twitter.util.Future
 import scala.collection.mutable.Map
+import org.jboss.netty.handler.codec.http._
 
-abstract class FinatraSpecHelper extends AbstractFinatraSpec {
-  def response  = lastResponse.asInstanceOf[FinatraResponse]
+abstract class FinatraSpecHelper extends AbstractFinatraSpec[Request, Future[HttpResponse]] {
+  def response  = lastResponse.asInstanceOf[Future[HttpResponse]]
 
   def request(
     path: String,
@@ -30,6 +31,6 @@ abstract class FinatraSpecHelper extends AbstractFinatraSpec {
 
   override def buildRequest(method:String, path:String, params:Map[String,String]=Map(), headers:Map[String,String]=Map()) {
     val req       = request(method=method,path=path,params=params,headers=headers)
-    lastResponse  = app.dispatch(req).asInstanceOf[Option[Future[FinatraResponse]]].get.get()
+    lastResponse  = app.dispatch(req).asInstanceOf[Option[Future[HttpResponse]]].get.get()
   }
 }

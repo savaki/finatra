@@ -27,9 +27,9 @@ object foo {
 
 object FinatraServer {
 
-  type FinatraController = AbstractFinatraController[FinatraRequest, Future[HttpResponse]]
+  type FinatraController = AbstractFinatraController[Request, Future[HttpResponse]]
 
-  val controllers = new ControllerCollection[FinatraRequest, Future[HttpResponse]]
+  val controllers = new ControllerCollection[Request, Future[HttpResponse]]
   val templateEngine = new TemplateHandler
   var layoutHelperFactory = new LayoutHelperFactory
   var docroot = "public"
