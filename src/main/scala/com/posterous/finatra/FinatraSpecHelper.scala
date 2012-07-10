@@ -7,10 +7,29 @@ import com.twitter.util.Future
 import scala.collection.mutable.Map
 
 abstract class FinatraSpecHelper extends AbstractFinatraSpec {
-  def response = lastResponse.asInstanceOf[FinatraResponse]
+  def response  = lastResponse.asInstanceOf[FinatraResponse]
+
+  def request(
+    path: String,
+    method: String = "GET",
+    body: Array[Byte] = Array(),
+    params: Map[String, String] = Map(),
+    multiParams: Map[String, MultipartItem] = Map(),
+    headers: Map[String, String] = Map(),
+    cookies: Map[String, FinatraCookie] = Map()
+  ) = {
+    new Request(
+      method = method,
+      path = path,
+      params = params,
+      multiParams = multiParams,
+      headers = headers,
+      cookies = cookies
+    )
+  }
 
   override def buildRequest(method:String, path:String, params:Map[String,String]=Map(), headers:Map[String,String]=Map()) {
-    val request   = new Request(method=method,path=path,params=params,headers=headers)
-    lastResponse  = app.dispatch(request).asInstanceOf[Option[Future[FinatraResponse]]].get.get()
+    val req       = request(method=method,path=path,params=params,headers=headers)
+    lastResponse  = app.dispatch(req).asInstanceOf[Option[Future[FinatraResponse]]].get.get()
   }
 }

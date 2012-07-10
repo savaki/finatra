@@ -13,7 +13,7 @@ class MyApp extends FinatraController {
 }
 
 @RunWith(classOf[JUnitRunner])
-class FinatraIntegrationSpec extends FinatraSpec {
+class FinatraIntegrationSpec extends FinatraSpecHelper {
 
   def app[Request,FinatraResponse] = { new MyApp }
 
