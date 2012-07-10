@@ -7,7 +7,7 @@ import org.jboss.netty.util.CharsetUtil.UTF_8
 import com.twitter.util.Future
 
 import com.codahale.jerkson.Json._
-import com.capotej.finatra_core._
+import com.twitter.finatra_core._
 
 object FinatraResponse {
   def apply(body: String) = new FinatraResponse().body(body).status(200).build

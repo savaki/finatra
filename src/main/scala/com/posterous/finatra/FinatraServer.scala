@@ -11,19 +11,9 @@ import java.net.InetSocketAddress
 import com.twitter.finagle.builder.{Server, ServerBuilder}
 import com.twitter.finagle.http.Http
 import scala.collection.mutable.Map
-
-
 import scala.collection.mutable.ListBuffer
-/**
- * @author ${user.name}
- */
-import com.capotej.finatra_core._
+import com.twitter.finatra_core._
 import scala.collection.JavaConversions._
-
-object foo {
-  import FinatraServer.FinatraController
-
-}
 
 object FinatraServer {
 
@@ -81,13 +71,13 @@ object FinatraServer {
     }
 
     def apply(rawRequest: HttpRequest) = {
-      val request = new Request(path=pathOf(rawRequest.getUri()),
-                                       method=rawRequest.getMethod.toString,
-                                       params=paramsOf(rawRequest),
-                                       headers=headersOf(rawRequest),
-                                       cookies=cookiesOf(rawRequest),
-                                       body=(rawRequest.getContent.array))
-
+      val request = new Request
+      request.path    (pathOf(rawRequest.getUri))
+      request.method  (rawRequest.getMethod.toString)
+      request.params  (paramsOf(rawRequest))
+      request.headers (headersOf(rawRequest))
+      request.cookies (cookiesOf(rawRequest))
+      request.body    (rawRequest.getContent.array)
 
       FinatraServer.controllers.dispatch(request) match {
         case Some(response) =>

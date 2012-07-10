@@ -1,6 +1,6 @@
 package com.posterous.finatra
 
-import com.capotej.finatra_core.AbstractFinatraController
+import com.twitter.finatra_core.AbstractFinatraController
 import com.twitter.util.Future
 import org.jboss.netty.handler.codec.http._
 
