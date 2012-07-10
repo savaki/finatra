@@ -8,6 +8,7 @@ import com.twitter.util.Future
 
 import com.codahale.jerkson.Json._
 import com.capotej.finatra_core._
+import com.posterous.finatra.FinatraServer.FinatraController
 
 class FinatraApp extends FinatraController {
 
