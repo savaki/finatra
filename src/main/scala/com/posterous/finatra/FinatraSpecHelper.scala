@@ -6,12 +6,12 @@ import org.jboss.netty.handler.codec.http.DefaultHttpResponse
 import com.twitter.util.Future
 import scala.collection.mutable.Map
 import org.jboss.netty.handler.codec.http._
+import org.jboss.netty.util.CharsetUtil.UTF_8
 
 abstract class FinatraSpecHelper extends AbstractFinatraSpec[Request, Future[HttpResponse]] {
 
-  def response  = lastResponse.asInstanceOf[Future[HttpResponse]]
-
-  def request = new Request
+  def response  = lastResponse.get.getContent.toString(UTF_8)
+  def request   = new Request
 
   var lastResponse:Future[HttpResponse] = null
 
