@@ -120,6 +120,7 @@ class Response {
   }
 
   def build = {
+    println("***** BUILD BEING CALLED HOLY FUCK********")
     val responseStatus = HttpResponseStatus.valueOf(status)
     val resp = new DefaultHttpResponse(HTTP_1_1, responseStatus)
     //var cookies = Map[String, Cookie]()
