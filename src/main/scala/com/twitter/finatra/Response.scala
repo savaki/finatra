@@ -64,10 +64,15 @@ class Response {
     this
   }
 
-  // def cookie(c: Cookie) = {
-  //   this.advCookies += (c.value -> c)
-  //   this
-  // }
+  def ok = {
+    status(200)
+    this
+  }
+
+  def notFound = {
+    status(404)
+    this
+  }
 
   def body(s: String) = {
     this.strBody = Some(s)
@@ -76,6 +81,18 @@ class Response {
 
   def status(i: Int): Response = {
     this.status = i
+    this
+  }
+
+  def plain(body:String) = {
+    this.header("Content-Type", "text/plain")
+    this.body(body)
+    this
+  }
+
+  def html(body:String) = {
+    this.header("Content-Type", "text/html")
+    this.body(body)
     this
   }
 
@@ -95,6 +112,7 @@ class Response {
   }
 
   def json(o: Any): Response = {
+    this.header("Content-Type", "application/json")
     this.json = Some(o)
     this
   }
@@ -120,7 +138,6 @@ class Response {
   }
 
   def build = {
-    println("***** BUILD BEING CALLED HOLY FUCK********")
     val responseStatus = HttpResponseStatus.valueOf(status)
     val resp = new DefaultHttpResponse(HTTP_1_1, responseStatus)
     //var cookies = Map[String, Cookie]()
