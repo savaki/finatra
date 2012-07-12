@@ -1,4 +1,5 @@
 package com.twitter.finatra
+import com.twitter.finatra_views.View
 
 trait ResponseBuilder {
 
@@ -41,6 +42,11 @@ trait ResponseBuilder {
   def json(obj:Any) = {
     this.header("Content-Type", "application/json")
     this.response.json(obj)
+    this
+  }
+
+  def view(view:View) = {
+    this.response.view(view)
     this
   }
 }

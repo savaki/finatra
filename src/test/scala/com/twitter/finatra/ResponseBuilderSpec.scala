@@ -5,12 +5,17 @@ import org.scalatest.junit.JUnitRunner
 import org.jboss.netty.util.CharsetUtil.UTF_8
 
 import com.twitter.finatra.ResponseBuilder
+import com.twitter.finatra_views.View
 
 class MockController extends ResponseBuilder {}
+class MockView(val title:String) extends View {
+  val template = "mock.mustache"
+}
 
 @RunWith(classOf[JUnitRunner])
 class ResponseBuilderSpec extends ShouldSpec {
-  def controller = new MockController
+  def controller  = new MockController
+  def view        = new MockView("howdy view")
 
   "render.ok" should "return a 200 response" in {
     controller.render.ok.response.status should equal (200)
@@ -49,4 +54,11 @@ class ResponseBuilderSpec extends ShouldSpec {
     response.headers("Content-Type") should equal ("application/json")
   }
 
+  "render.view()" should "return a 200 view response" in {
+    val response = controller.render.view(view).response
+    val body     = response.build.get.getContent.toString(UTF_8)
+
+    response.status should equal (200)
+    body should include ("howdy view")
+  }
 }

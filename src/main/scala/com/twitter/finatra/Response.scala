@@ -6,6 +6,7 @@ import org.jboss.netty.handler.codec.http.HttpVersion.HTTP_1_1
 import org.jboss.netty.buffer.ChannelBuffers.copiedBuffer
 import org.jboss.netty.util.CharsetUtil.UTF_8
 import com.twitter.util.Future
+import com.twitter.finatra_views.View
 
 import com.codahale.jerkson.Json._
 import com.twitter.finatra_core._
@@ -23,13 +24,13 @@ class Response {
   var simpleCookies: Map[String, String] = Map()
   //var advCookies: Map[String, FinatraCookie] = Map()
 
-  var template: Option[String] = None
-  var exports: Option[Any] = None
-  var layout: Option[String] = None
-  var strBody: Option[String] = None
-  var binBody: Option[Array[Byte]] = None
-  var json: Option[Any] = None
-
+  var template: Option[String]      = None
+  var exports: Option[Any]          = None
+  var layout: Option[String]        = None
+  var strBody: Option[String]       = None
+  var binBody: Option[Array[Byte]]  = None
+  var json: Option[Any]             = None
+  var view: Option[View]            = None
 
   def setContent(resp: HttpResponse) = {
     json match {
@@ -37,13 +38,11 @@ class Response {
         resp.setHeader("Content-Type", "application/json")
         resp.setContent(copiedBuffer(generate(j), UTF_8))
       case None =>
-        //template match {
-          // case Some(t) =>
-          //   val l = layout.getOrElse("application.mustache")
-          //   val e = exports.getOrElse("")
-          //   val out = FinatraServer.templateEngine.captureTemplate(t, l, e)
-          //   resp.setContent(copiedBuffer(out, UTF_8))
-          // case None =>
+        view match {
+           case Some(v) =>
+             val out = v.render
+             resp.setContent(copiedBuffer(out, UTF_8))
+           case None =>
             strBody match {
               case Some(sb) =>
                 resp.setContent(copiedBuffer(sb, UTF_8))
@@ -55,7 +54,7 @@ class Response {
                     throw new RuntimeException("nothing to render")
                 }
             }
-        //}
+        }
       }
     resp
   }
@@ -97,6 +96,11 @@ class Response {
 
   def json(o: Any): Response = {
     this.json = Some(o)
+    this
+  }
+
+  def view(v: View): Response = {
+    this.view = Some(v)
     this
   }
 
